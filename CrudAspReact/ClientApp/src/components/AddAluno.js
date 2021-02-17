@@ -53,17 +53,17 @@ export class AddAluno extends Component {
 
         if (this.state.aluno.id) {
             const response1 = fetch('api/Alunos/' + this.state.aluno.id, { method: 'PUT', body: data });
-            this.props.history.push('/Crud');
+            this.props.history.push('/');
         }
         else {
             const response2 = fetch('api/Alunos/', { method: 'POST', body: data });
-            this.props.history.push('/Crud');
+            this.props.history.push('/');
         }
     }
 
     handleCancel(event) {
         event.preventDefault();
-        this.props.history.push('/Crud');
+        this.props.history.push('/');
     }
 
     renderCreateForm() {
@@ -74,11 +74,13 @@ export class AddAluno extends Component {
                 </div>
                 <div className="form row">
                     <div className="col-md-6">
+                        <text>Nome:</text>
                         <input className="form-control" type="text" name="Nome" defaultValue={this.state.aluno.nome} required />
                     </div>
                 </div>
                 <div className="form row">
                     <div className="col-md-6">
+                        <text>Matricula:</text>
                         <input className="form-control" type="text" name="Matricula" defaultValue={this.state.aluno.matricula} required />
                     </div>
                 </div>
