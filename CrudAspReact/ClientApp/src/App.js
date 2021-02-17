@@ -18,7 +18,7 @@ export default class App extends Component {
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data' component={FetchData} />
         <Route path='/Crud' component={Crud} />
-        <Route path='/produto/edit/:id' component={AddAluno} />
+        <Route path='/add-aluno' component={AddAluno} />
       </Layout>
     );
   }

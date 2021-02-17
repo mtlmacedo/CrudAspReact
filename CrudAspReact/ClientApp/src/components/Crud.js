@@ -14,7 +14,7 @@ export class Crud extends Component {
     }
 
     static handleEdit(id) {
-        window.location.href = "/aluno/edit/" + id;
+        window.location.href = "/add-aluno/" + id;
     }
 
     static handleDelete(id) {
