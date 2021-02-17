@@ -4,6 +4,7 @@ export class Aluno {
     constructor() {
         this.id = 0;
         this.nome = "";
+        this.matricula = "";
     }
 }
 
@@ -26,7 +27,6 @@ export class AddAluno extends Component {
             this.setState({ title: "Edit", aluno: data, loading: false });
         }
         else {
-
             this.state = { title: "Create", aluno: new Aluno(), loading: false };
         }
     }
@@ -75,6 +75,11 @@ export class AddAluno extends Component {
                 <div className="form row">
                     <div className="col-md-6">
                         <input className="form-control" type="text" name="Nome" defaultValue={this.state.aluno.nome} required />
+                    </div>
+                </div>
+                <div className="form row">
+                    <div className="col-md-6">
+                        <input className="form-control" type="text" name="Matricula" defaultValue={this.state.aluno.matricula} required />
                     </div>
                 </div>
 
