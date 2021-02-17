@@ -69,16 +69,16 @@ export class AddAluno extends Component {
     renderCreateForm() {
         return (
             <form onSubmit={this.handleSalve}>
-                <div className="form-group row">
+                <div className="form row">
                     <input type="hidden" name="id" value={this.state.aluno.id} />
                 </div>
-                <div className="form-group row">
+                <div className="form row">
                     <div className="col-md-6">
                         <input className="form-control" type="text" name="Nome" defaultValue={this.state.aluno.nome} required />
                     </div>
                 </div>
 
-                <div className="form-group">
+                <div className="form button">
                     <button type="submit" className="btn btn-success" value={this.state.aluno.id}>Salvar</button>
                     <button className="btn btn-danger" onClick={this.handleCancel}>Cencelar</button>
                 </div>

@@ -37,7 +37,8 @@ export class Crud extends Component {
                 <thead>
                     <tr>
                         <th>Código</th>
-                        <th>Descrição</th>
+                        <th>Nome</th>
+                        <th>Matricula</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -46,9 +47,11 @@ export class Crud extends Component {
                         <tr key={a.id}>
                             <td>{a.id}</td>
                             <td>{a.nome}</td>
+                            <td>{a.matricula}</td>
+
 
                             <td>
-                                <button className="btn btn-success" onClick={(id) => this.handleEdit(a.id)}>Edit</button> &nbsp;
+                                <button className="btn btn-success" onClick={(id) => this.handleEdit(a.id)}>Edit</button>;
                                   <button className="btn btn-danger" onClick={(id) => this.handleDelete(a.id)}>Delete</button>
                             </td>
 
