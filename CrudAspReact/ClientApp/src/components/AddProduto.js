@@ -1,0 +1,97 @@
+﻿import React, { Component } from 'react';
+
+export class Produto {
+    constructor() {
+        this.id = 0;
+        this.valor = "";
+        this.data = "";
+    }
+}
+
+export class AddProduto extends Component {
+    constructor(props) {
+        super(props);
+        this.intialize();
+        this.state = { title: "", produto: new Produto(), loading: true };
+        
+        this.handleSalve = this.handleSalve.bind(this);
+        this.handleCancel = this.handleCancel.bind(this);
+    }
+
+    intialize () {
+        var id = this.props.match.params.id;
+        if (id > 0) {
+            fetch('api/Produtos/' + id)
+                .then(response => response.json())
+                .then(data => this.setState({ title: "Edit", produto: data, loading: false }));             
+        }
+        else if (id == null || id == undefined) {
+            this.state = { title: "Create", produto: new Produto(), loading: false };
+        }
+    }
+
+    render() {
+        let contents = this.state.loading
+            ? <p><em>Loading...</em></p>
+            : this.renderCreateForm();
+
+        return (
+            <div>
+                <h1>{this.state.title}</h1>
+                <h3>Produto</h3>
+                {contents}
+            </div>
+        );
+    }
+
+    handleSalve(event) {
+        event.preventDefault();
+
+        const data = new FormData(event.target);
+
+        if (this.state.produto.id) {
+            fetch('api/Produtos/' + this.state.produto.id, { method: 'PUT', body: data });
+            this.props.history.push('/produto');
+        }
+        else {
+            fetch('api/Produtos/', { method: 'POST', body: data });
+            this.props.history.push('/produto');
+        }
+    }
+
+    handleCancel(event) {
+        event.preventDefault();
+        this.props.history.push('/produto');
+    }
+
+    renderCreateForm() {
+        return (
+            <form onSubmit={this.handleSalve}>
+                <div className="form row">
+                    <input type="hidden" name="id" value={this.state.produto.id} />
+                </div>
+                <div className="form row">
+                    <div className="col-md-5">
+                        <text>Valor:</text>
+                        <input className="form-control" type="number" name="Valor" defaultValue={this.state.produto.valor} required />
+                    </div>
+                </div>
+                <div className="form row">
+                    <div className="col-md-5">
+                        <text>Data:</text>
+                        <input className="form-control" type="date" name="Data" defaultValue={this.state.produto.data.substring(0, 10)} required />
+                    </div>
+                </div>
+
+                <div className="form button">
+                    <button type="submit" className="btn btn-success" value={this.state.produto.id}>Salvar</button>
+                    <button className="btn btn-danger" onClick={this.handleCancel}>Cancelar</button>
+                </div>
+            </form>
+
+        );
+    }
+
+}
+
+

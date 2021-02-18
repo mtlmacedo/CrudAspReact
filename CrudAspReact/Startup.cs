@@ -25,6 +25,9 @@ namespace CrudAspReact
             services.AddDbContext<ContextAluno>
                 (options => options.UseSqlServer
                 (Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<ProdutoContext>
+               (options => options.UseSqlServer
+               (Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllersWithViews();
 

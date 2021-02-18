@@ -12,43 +12,43 @@ namespace CrudAspReact.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AlunosController : ControllerBase
+    public class ProdutosController : ControllerBase
     {
-        private readonly ContextAluno _context;
+        private readonly ProdutoContext _context;
 
-        public AlunosController(ContextAluno context)
+        public ProdutosController(ProdutoContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Aluno>>> GetAluno()
+        public async Task<ActionResult<IEnumerable<Produto>>> GetProduto()
         {
-            return await _context.Aluno.ToListAsync();
+            return await _context.Produtos.ToListAsync();
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Aluno>> GetAluno(int id)
+        public async Task<ActionResult<Produto>> GetProduto(int id)
         {
-            var aluno = await _context.Aluno.FindAsync(id);
+            var produto = await _context.Produtos.FindAsync(id);
 
-            if (aluno == null)
+            if (produto == null)
             {
                 return NotFound();
             }
 
-            return aluno;
+            return produto;
         }
 
-            [HttpPut("{id}")]
-        public async Task<IActionResult> PutAluno(int id, [FromForm] Aluno aluno)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutProduto(int id, [FromForm] Produto produto)
         {
-            if (id != aluno.Id)
+            if (id != produto.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(aluno).State = EntityState.Modified;
+            _context.Entry(produto).State = EntityState.Modified;
 
             try
             {
@@ -56,7 +56,7 @@ namespace CrudAspReact.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!AlunoExists(id))
+                if (!ProdutoExists(id))
                 {
                     return NotFound();
                 }
@@ -70,32 +70,32 @@ namespace CrudAspReact.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<Aluno>> PostAluno([FromForm] Aluno aluno)
+        public async Task<ActionResult<Produto>> PostProduto([FromForm] Produto produto)
         {
-            _context.Aluno.Add(aluno);
+            _context.Produtos.Add(produto);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAluno", new { id = aluno.Id }, aluno);
+            return CreatedAtAction("GetProduto", new { id = produto.Id }, produto);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAluno(int id)
+        public async Task<IActionResult> DeleteProduto(int id)
         {
-            var aluno = await _context.Aluno.FindAsync(id);
-            if (aluno == null)
+            var produto = await _context.Produtos.FindAsync(id);
+            if (produto == null)
             {
                 return NotFound();
             }
 
-            _context.Aluno.Remove(aluno);
+            _context.Produtos.Remove(produto);
             await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
-        private bool AlunoExists(int id)
+        private bool ProdutoExists(int id)
         {
-            return _context.Aluno.Any(e => e.Id == id);
+            return _context.Produtos.Any(e => e.Id == id);
         }
     }
 }

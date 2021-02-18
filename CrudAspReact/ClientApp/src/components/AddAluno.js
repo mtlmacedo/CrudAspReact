@@ -17,10 +17,9 @@ export class AddAluno extends Component {
         this.handleSalve = this.handleSalve.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
-
+    
     async intialize() {
-
-        var id = this.props.match.params["id"];
+        var id = this.props.match.params.id;
         if (id > 0) {
             const response = await fetch('api/Alunos/' + id);
             const data = await response.json();
@@ -53,17 +52,17 @@ export class AddAluno extends Component {
 
         if (this.state.aluno.id) {
             const response1 = fetch('api/Alunos/' + this.state.aluno.id, { method: 'PUT', body: data });
-            this.props.history.push('/');
+            this.props.history.push('/alunos');
         }
         else {
             const response2 = fetch('api/Alunos/', { method: 'POST', body: data });
-            this.props.history.push('/');
+            this.props.history.push('/alunos');
         }
     }
 
     handleCancel(event) {
         event.preventDefault();
-        this.props.history.push('/');
+        this.props.history.push('/alunos');
     }
 
     renderCreateForm() {
@@ -87,7 +86,7 @@ export class AddAluno extends Component {
 
                 <div className="form button">
                     <button type="submit" className="btn btn-success" value={this.state.aluno.id}>Salvar</button>
-                    <button className="btn btn-danger" onClick={this.handleCancel}>Cencelar</button>
+                    <button className="btn btn-danger" onClick={this.handleCancel}>Cancelar</button>
                 </div>
             </form>
 
