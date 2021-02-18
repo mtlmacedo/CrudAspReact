@@ -17,11 +17,9 @@ export default class App extends Component {
       <Layout>
             <Route exact path='/' component={Home} />
             <Route path='/alunos' component={Alunos} />
-            <Route path='/add-aluno/:id' component={AddAluno} />
-            <Route path='/add-aluno/' redirectTo='/add-aluno' component={AddAluno} />
+            <Route path='/add-aluno/:id?' component={AddAluno} />
             <Route path='/produto' component={Produto} />
-            <Route path='/add-produto/:id' component={AddProduto} />
-            <Route path='/add-produto/' component={AddProduto} />
+            <Route path='/add-produto/:id?' component={AddProduto} />           
       </Layout>
     );
   }

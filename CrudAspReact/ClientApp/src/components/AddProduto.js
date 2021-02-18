@@ -11,9 +11,8 @@ export class Produto {
 export class AddProduto extends Component {
     constructor(props) {
         super(props);
-        this.intialize();
         this.state = { title: "", produto: new Produto(), loading: true };
-        
+        this.intialize();       
         this.handleSalve = this.handleSalve.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
     }
@@ -71,13 +70,13 @@ export class AddProduto extends Component {
                     <input type="hidden" name="id" value={this.state.produto.id} />
                 </div>
                 <div className="form row">
-                    <div className="col-md-5">
+                    <div className="col-md-3">
                         <text>Valor:</text>
                         <input className="form-control" type="number" name="Valor" defaultValue={this.state.produto.valor} required />
                     </div>
                 </div>
                 <div className="form row">
-                    <div className="col-md-5">
+                    <div className="col-md-3">
                         <text>Data:</text>
                         <input className="form-control" type="date" name="Data" defaultValue={this.state.produto.data.substring(0, 10)} required />
                     </div>
