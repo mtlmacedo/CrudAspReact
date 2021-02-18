@@ -37,6 +37,7 @@ export class Produto extends Component {
                 <thead>
                     <tr>
                         <th>Código</th>
+                        <th>Nome</th>
                         <th>Valor</th>
                         <th>Data</th>
                         <th>Ações</th>
@@ -46,22 +47,22 @@ export class Produto extends Component {
                     {Produto.map(a =>
                         <tr key={a.id}>
                             <td>{a.id}</td>
+                            <td>{a.nome}</td>
                             <td>{a.valor}</td>
-                            <td>{(a.data)}</td>
-
-
+                            <td>{this.formatData(a.data)}</td>
                             <td>
                                 <button className="btn btn-success" onClick={(id) => this.handleEdit(a.id)}>Edit</button>
                                 <button className="btn btn-danger" onClick={(id) => this.handleDelete(a.id)}>Delete</button>
                             </td>
-
                         </tr>
-
                     )}
                 </tbody>
             </table>
         );
+    }
 
+    static formatData(d) {
+        return d.substring(8, 10) + '/' + d.substring(5, 7) + '/' + d.substring(4, 0);
     }
 
     render() {
@@ -81,11 +82,10 @@ export class Produto extends Component {
         );
     }
 
-
-    async populaProdutoData() {
-        const response = await fetch('api/Produtos');
-        const data = await response.json();
-        this.setState({ Produto: data, loading: false });
+    populaProdutoData() {
+        fetch('api/Produtos')
+            .then(response => response.json())
+            .then(data => this.setState({ Produto: data, loading: false }));
     }
 
 }

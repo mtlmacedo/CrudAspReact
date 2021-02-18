@@ -3,6 +3,7 @@
 export class Produto {
     constructor() {
         this.id = 0;
+        this.nome = "";
         this.valor = "";
         this.data = "";
     }
@@ -68,6 +69,12 @@ export class AddProduto extends Component {
             <form onSubmit={this.handleSalve}>
                 <div className="form row">
                     <input type="hidden" name="id" value={this.state.produto.id} />
+                </div>
+                <div className="form row">
+                    <div className="col-md-3">
+                        <text>Nome:</text>
+                        <input className="form-control" type="text" name="Nome" defaultValue={this.state.produto.nome} required />
+                    </div>
                 </div>
                 <div className="form row">
                     <div className="col-md-3">

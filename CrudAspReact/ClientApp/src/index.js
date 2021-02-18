@@ -11,9 +11,7 @@ const rootElement = document.getElementById('root');
 ReactDOM.render(
 
     <BrowserRouter basename={baseUrl}>
-        <React.StrictMode >
             <App />
-        </React.StrictMode>
     </BrowserRouter>,
   rootElement);
 

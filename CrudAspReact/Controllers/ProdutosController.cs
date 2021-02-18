@@ -24,7 +24,9 @@ namespace CrudAspReact.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Produto>>> GetProduto()
         {
-            return await _context.Produtos.ToListAsync();
+            var produtos = await _context.Produtos.ToListAsync();
+            produtos.ForEach(p => p.Data = DateTime.Parse(p.Data.ToString("dd/MM/yyyy")));
+            return produtos;
         }
 
         [HttpGet("{id}")]
@@ -47,7 +49,7 @@ namespace CrudAspReact.Controllers
             {
                 return BadRequest();
             }
-
+            
             _context.Entry(produto).State = EntityState.Modified;
 
             try

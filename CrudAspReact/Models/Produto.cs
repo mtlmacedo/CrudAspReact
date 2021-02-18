@@ -15,5 +15,7 @@ namespace CrudAspReact.Models
         public decimal Valor { get; set; }
         [Column("Data")]
         public DateTime Data { get; set; }
+        [Column("Nome")]
+        public String Nome { get; set; }
     }
 }

@@ -22,3 +22,8 @@ code {
 btn-success {
     border-bottom-left-radius: 0;
 }
+.inputDate{
+    border: none;
+    background:none;
+    outline: none;
+}
