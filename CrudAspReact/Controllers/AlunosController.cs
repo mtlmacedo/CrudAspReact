@@ -40,7 +40,7 @@ namespace CrudAspReact.Controllers
             return aluno;
         }
 
-            [HttpPut("{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> PutAluno(int id, [FromForm] Aluno aluno)
         {
             if (id != aluno.Id)
@@ -92,7 +92,6 @@ namespace CrudAspReact.Controllers
 
             return NoContent();
         }
-
         private bool AlunoExists(int id)
         {
             return _context.Aluno.Any(e => e.Id == id);

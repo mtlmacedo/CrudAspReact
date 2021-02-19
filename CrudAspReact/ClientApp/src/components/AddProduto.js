@@ -16,6 +16,7 @@ export class AddProduto extends Component {
         this.intialize();       
         this.handleSalve = this.handleSalve.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     intialize () {
@@ -64,6 +65,15 @@ export class AddProduto extends Component {
         this.props.history.push('/produto');
     }
 
+    handleChange(event) {
+        const num = /^[0-9,\b]+$/;
+
+        if (event != undefined && event != null && !num.test(event.target.value)) {
+            var value = event.target.value;
+            event.target.value = value.slice(0, -1);
+        }
+    }
+
     renderCreateForm() {
         return (
             <form onSubmit={this.handleSalve}>
@@ -79,7 +89,7 @@ export class AddProduto extends Component {
                 <div className="form row">
                     <div className="col-md-3">
                         <text>Valor:</text>
-                        <input className="form-control" type="number" name="Valor" defaultValue={this.state.produto.valor} required />
+                        <input className="form-control" type="text" name="Valor" onChange={this.handleChange} defaultValue={this.state.produto.valor} required />
                     </div>
                 </div>
                 <div className="form row">

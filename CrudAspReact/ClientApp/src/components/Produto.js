@@ -25,9 +25,8 @@ export class Produto extends Component {
         else {
             fetch('api/Produtos/' + id, { method: 'delete' })
                 .then(json => {
-                    window.location.href = "/produto";
                     alert('Deletado com Sucesso!');
-                })
+                });
         }
     }
 
@@ -36,7 +35,6 @@ export class Produto extends Component {
             <table className='table table-striped' aria-labelledby="tabelLabel" >
                 <thead>
                     <tr>
-                        <th>Código</th>
                         <th>Nome</th>
                         <th>Valor</th>
                         <th>Data</th>
@@ -46,7 +44,6 @@ export class Produto extends Component {
                 <tbody>
                     {Produto.map(a =>
                         <tr key={a.id}>
-                            <td>{a.id}</td>
                             <td>{a.nome}</td>
                             <td>{a.valor}</td>
                             <td>{this.formatData(a.data)}</td>
@@ -75,17 +72,17 @@ export class Produto extends Component {
                 <h1 id="tabelLabel" >Produtos</h1>
                 <p>Tela de Listagem de Produtos</p>
                 <p>
-                    <Link to="/add-produto">Cadastrar Produtos</Link>
+                    <Link className="btn" to="/add-produto">Cadastrar Produtos</Link>
                 </p>
                 {contents}
             </div>
         );
     }
 
-    populaProdutoData() {
+     populaProdutoData() {
         fetch('api/Produtos')
             .then(response => response.json())
             .then(data => this.setState({ Produto: data, loading: false }));
-    }
+     }
 
 }

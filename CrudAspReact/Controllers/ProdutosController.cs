@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using CrudAspReact.Context;
 using CrudAspReact.Models;
+using CrudAspReact.Repository;
+using CrudAspReact.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,92 +14,67 @@ namespace CrudAspReact.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProdutosController : ControllerBase
+    public class ProdutosController : Controller
     {
-        private readonly ProdutoContext _context;
-
+        private ProdutoServico produtoServico;
         public ProdutosController(ProdutoContext context)
         {
-            _context = context;
+            this.produtoServico = new ProdutoServico(context);
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Produto>>> GetProduto()
+        public ActionResult<IEnumerable<Produto>> GetProduto()
         {
-            var produtos = await _context.Produtos.ToListAsync();
-            produtos.ForEach(p => p.Data = DateTime.Parse(p.Data.ToString("dd/MM/yyyy")));
-            return produtos;
+            IEnumerable<Produto> produtos = this.produtoServico.GetProduto();
+            return CreatedAtAction("GetProduto", produtos);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Produto>> GetProduto(int id)
+        public ActionResult<Produto> GetProduto(int id)
         {
-            var produto = await _context.Produtos.FindAsync(id);
-
-            if (produto == null)
-            {
-                return NotFound();
-            }
-
-            return produto;
+            var produto = produtoServico.GetProdutoById(id);
+            return CreatedAtAction("GetProduto", produto);
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutProduto(int id, [FromForm] Produto produto)
+        public IActionResult PutProduto(int id, [FromForm] Produto produto)
         {
-            if (id != produto.Id)
-            {
-                return BadRequest();
-            }
-            
-            _context.Entry(produto).State = EntityState.Modified;
-
             try
             {
-                await _context.SaveChangesAsync();
+                this.produtoServico.PutProduto(produto);
+                return Ok();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ProdutoExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+                return NotFound();
+            }            
         }
 
         [HttpPost]
-        public async Task<ActionResult<Produto>> PostProduto([FromForm] Produto produto)
+        public ActionResult<Produto> PostProduto([FromForm] Produto produto)
         {
-            _context.Produtos.Add(produto);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetProduto", new { id = produto.Id }, produto);
+            try {
+                this.produtoServico.PostProduto(produto);
+                return CreatedAtAction("GetProduto", new { id = produto.Id }, produto);
+            }
+            catch
+            {
+                return NoContent();
+            }
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteProduto(int id)
+        public IActionResult DeleteProduto(int id)
         {
-            var produto = await _context.Produtos.FindAsync(id);
-            if (produto == null)
+            try
+            {
+                this.produtoServico.DeleteProduto(id);
+                return Ok();
+            }
+            catch
             {
                 return NotFound();
             }
-
-            _context.Produtos.Remove(produto);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
-        private bool ProdutoExists(int id)
-        {
-            return _context.Produtos.Any(e => e.Id == id);
         }
     }
 }
