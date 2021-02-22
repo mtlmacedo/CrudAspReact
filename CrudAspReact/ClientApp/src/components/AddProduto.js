@@ -1,33 +1,53 @@
 ﻿import React, { Component } from 'react';
 
+
 export class Produto {
     constructor() {
-        this.id = 0;
-        this.nome = "";
-        this.valor = "";
-        this.data = "";
+       
     }
 }
+
 
 export class AddProduto extends Component {
     constructor(props) {
         super(props);
-        this.state = { title: "", produto: new Produto(), loading: true };
-        this.intialize();       
+        this.state = {
+            title: "",
+            id: 0,
+            nome: "",
+            valor: "",
+            data: "",
+            loading: true
+        };
+        this.intialize();
         this.handleSalve = this.handleSalve.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
-        this.handleChange = this.handleChange.bind(this);
+        this.handleChangeValor = this.handleChangeValor.bind(this);
     }
 
-    intialize () {
+    intialize() {
         var id = this.props.match.params.id;
         if (id > 0) {
             fetch('api/Produtos/' + id)
                 .then(response => response.json())
-                .then(data => this.setState({ title: "Edit", produto: data, loading: false }));             
+                .then(value => this.setState({
+                    title: "Edit",
+                    id: id,
+                    nome: value.nome,
+                    valor: value.valor,
+                    data: value.data,
+                    loading: false
+                }));
         }
-        else if (id == null || id == undefined) {
-            this.state = { title: "Create", produto: new Produto(), loading: false };
+        else  {
+            this.state = {
+                title: "Create",
+                id: 0,
+                nome: "",
+                valor: "",
+                data: "",
+                loading: false
+            };
         }
     }
 
@@ -50,8 +70,8 @@ export class AddProduto extends Component {
 
         const data = new FormData(event.target);
 
-        if (this.state.produto.id) {
-            fetch('api/Produtos/' + this.state.produto.id, { method: 'PUT', body: data });
+        if (this.state.id) {
+            fetch('api/Produtos/' + this.state.id, { method: 'PUT', body: data });
             this.props.history.push('/produto');
         }
         else {
@@ -65,49 +85,45 @@ export class AddProduto extends Component {
         this.props.history.push('/produto');
     }
 
-    handleChange(event) {
-        const num = /^[0-9,\b]+$/;
+    handleChangeValor(event) {
+        const valorFormatado = (event.target.validity.valid) ? event.target.value : this.state.valor;
+        this.setState({ valor: valorFormatado })
+    };
 
-        if (event != undefined && event != null && !num.test(event.target.value)) {
-            var value = event.target.value;
-            event.target.value = value.slice(0, -1);
-        }
-    }
 
     renderCreateForm() {
         return (
             <form onSubmit={this.handleSalve}>
                 <div className="form row">
-                    <input type="hidden" name="id" value={this.state.produto.id} />
+                    <input type="hidden" name="id" value={this.state.id} />
                 </div>
                 <div className="form row">
                     <div className="col-md-3">
                         <text>Nome:</text>
-                        <input className="form-control" type="text" name="Nome" defaultValue={this.state.produto.nome} required />
+                        <input className="form-control" type="text" name="Nome" defaultValue={this.state.nome} required />
                     </div>
                 </div>
                 <div className="form row">
                     <div className="col-md-3">
                         <text>Valor:</text>
-                        <input className="form-control" type="text" name="Valor" onChange={this.handleChange} defaultValue={this.state.produto.valor} required />
+                        <input className="form-control" type="text" name="Valor" pattern="[0-9]*" value={this.state.valor} onChange={this.handleChangeValor} required />
                     </div>
                 </div>
                 <div className="form row">
                     <div className="col-md-3">
                         <text>Data:</text>
-                        <input className="form-control" type="date" name="Data" defaultValue={this.state.produto.data.substring(0, 10)} required />
+                        <input className="form-control" type="date" name="Data" defaultValue={this.state.data != null && this.state.data != undefined ? this.state.data.substring(0, 10) : null} required />
                     </div>
                 </div>
 
                 <div className="form button">
-                    <button type="submit" className="btn btn-success" value={this.state.produto.id}>Salvar</button>
+                    <button type="submit" className="btn btn-success" value={this.state.id}>Salvar</button>
                     <button className="btn btn-danger" onClick={this.handleCancel}>Cancelar</button>
                 </div>
             </form>
-
         );
-    }
 
+    }
 }
 
 

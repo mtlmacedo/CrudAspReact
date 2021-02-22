@@ -1,13 +1,13 @@
 ﻿import React, { Component } from "react"
 import { Link } from 'react-router-dom'
-import { AddProduto } from "./AddProduto";
 
 export class Produto extends Component {
     static displayName = "Produtos";
 
     constructor() {
         super();
-        this.state = { Produto: [], loading: true }
+        this.state = { Produto: [], loading: true };
+        this.reload = this.reload.bind(this)
     }
 
     componentDidMount() {
@@ -18,7 +18,14 @@ export class Produto extends Component {
         window.location.href = "/add-produto/" + id;
     }
 
+    reload() {
+        fetch('api/Produtos')
+            .then(response => response.json())
+            .then(data => this.setState({ Produto: data, loading: false }));
+    }
+
     static handleDelete(id) {
+        //var data = event.target;
         if (!window.confirm("Você deseja deletar o produto : " + id)) {
             return;
         }
@@ -26,7 +33,7 @@ export class Produto extends Component {
             fetch('api/Produtos/' + id, { method: 'delete' })
                 .then(json => {
                     alert('Deletado com Sucesso!');
-                });
+                })
         }
     }
 
@@ -48,8 +55,8 @@ export class Produto extends Component {
                             <td>{a.valor}</td>
                             <td>{this.formatData(a.data)}</td>
                             <td>
-                                <button className="btn btn-success" onClick={(id) => this.handleEdit(a.id)}>Edit</button>
-                                <button className="btn btn-danger" onClick={(id) => this.handleDelete(a.id)}>Delete</button>
+                                <button className="btn btn-success" onClick={(event) => this.handleEdit(a.id)}>Editar</button>
+                                <button className="btn btn-danger" onClick={(event) => { this.handleDelete(a.id) }}>Deletar</button>
                             </td>
                         </tr>
                     )}
@@ -79,10 +86,9 @@ export class Produto extends Component {
         );
     }
 
-     populaProdutoData() {
+    populaProdutoData() {
         fetch('api/Produtos')
             .then(response => response.json())
             .then(data => this.setState({ Produto: data, loading: false }));
-     }
-
+    }
 }
